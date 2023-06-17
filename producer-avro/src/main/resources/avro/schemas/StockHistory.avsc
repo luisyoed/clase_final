@@ -1,0 +1,34 @@
+{
+	"type": "record",
+    "name": "StockHistory",
+    "namespace": "com.example.demo.schema",
+    "fields": [
+    	{
+    		"name": "studentId",
+    		"type": "int",
+    		"default": -1
+    	},
+    	{
+    		"name": "name",
+    		"type": ["null","string"],
+    		"default": null
+    	},
+    	{
+    		"name": "lastName",
+    		"type": ["null","string"],
+    		"default": null
+    	},
+    	{
+    		"name": "mLastName",
+    		"type": ["null","string"],
+    		"default": null
+    	},
+    	{
+    		"name": "updated_at",
+    		"type": ["null","string"],
+    		"default": null
+    	}
+    
+    ]
+    
+}

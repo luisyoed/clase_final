@@ -1,0 +1,77 @@
+sudo su
+
+export CONFLUENT_HOME=/home/luiscalva/confluent-7.3.3
+
+export PATH=$PATH:$CONFLUENT_HOME/bin
+
+
+hostname -I
+
+
+Configuracion de IP archivo server.properties
+
+confluent-hub install confluentinc/kafka-connect-jdbc:10.7.3
+
+confluent local destroy
+
+
+confluent local services start
+
+ksql http://localhost:8088
+
+
+CREATE TABLE studentsnew (
+    studenid INT PRIMARY KEY,
+    name VARCHAR,
+    lastname VARCHAR,
+    mLastname VARCHAR,
+    updated_at VARCHAR
+) WITH (
+    KAFKA_TOPIC='topic_studentsnew_ksql',
+    VALUE_FORMAT='JSON',
+    PARTITIONS=4
+);
+
+Iniciamos postgres sql
+docker-compose up -d
+ 
+CREATE TABLE public.studentsnew (
+	studenid bigserial NOT NULL,
+	"name" varchar NULL,
+	lastname varchar NULL,
+	mlastname varchar NULL,
+	updated_at varchar NULL,
+	CONSTRAINT newtable_pk PRIMARY KEY (studenid)
+);
+
+
+{
+    "name": "source-student-new",
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+        "tasks.max": "2",
+        "connection.url": "jdbc:postgresql://localhost:5432/root?user=root&password=secret",
+        "table.whitelist": "studentsnew",
+        "mode": "bulk", //incrementing
+        "incrementing.column.name": "studenid",
+        "timestamp.column.name": "updated_at",
+        "topic.prefix": "topic_",
+        "topic.creation.default.replication.factor": 1,
+        "topic.creation.default.partitions": 4
+    }
+}
+
+
+CREATE SOURCE CONNECTOR `jdbc-connector` WITH(
+  "connector.class"= "io.confluent.connect.jdbc.JdbcSourceConnector",
+        "tasks.max"= "2",
+        "connection.url"= "jdbc=postgresql=//localhost=5432/root?user=root&password=secret",
+        "table.whitelist"= "studentsnew",
+        "mode"= "bulk",
+        "incrementing.column.name"= "studenid",
+        "timestamp.column.name"= "updated_at",
+        "topic.prefix"= "topic_",
+        "topic.creation.default.replication.factor"= 1,
+        "topic.creation.default.partitions"= 4
+        );
+

@@ -1,0 +1,13 @@
+{
+    "name": "sample-postgress-jdbc-connector22",
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+        "tasks.max": "2",
+        "connection.url": "jdbc:postgresql://127.0.0.1:5432/root?user=root&password=secret",
+        "table.whitelist": "todos",
+        "mode": "timestamp+incrementing",
+        "incrementing.column.name": "id",
+        "timestamp.column.name": "updated_at",
+        "topic.prefix": "test9-"
+    }
+}
