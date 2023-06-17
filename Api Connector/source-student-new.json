@@ -1,0 +1,15 @@
+{
+    "name": "source-student-new",
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+        "tasks.max": "2",
+        "connection.url": "jdbc:postgresql://localhost:5432/root?user=root&password=secret",
+        "table.whitelist": "studentsnew",
+        "mode": "bulk", 
+        "incrementing.column.name": "studenid",
+        "timestamp.column.name": "updated_at",
+        "topic.prefix": "topic_",
+        "topic.creation.default.replication.factor": 1,
+        "topic.creation.default.partitions": 4
+    }
+}
